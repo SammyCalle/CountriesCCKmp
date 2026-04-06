@@ -7,13 +7,13 @@ import io.ktor.client.call.body
 import io.ktor.client.request.get
 
 class CountryRemoteDataSource(private val client : HttpClient) {
-    private val baseUrl = "https://restcountries.com/v3.1/"
+    private val baseUrl = "https://restcountries.com/v3.1"
 
     suspend fun getCountries(): List<CountryDto> =
-        client.get("$baseUrl.all?fields=name,cca3").body()
+        client.get("$baseUrl/all?fields=name,cca3").body()
 
     suspend fun getCountryByCode(code: String): CountryDetailResponseDto =
-        client.get("$baseUrl.alpha/$code?fields=name,capital,continents,maps,population,timezones,currencies,languages,flags,coatOfArms")
+        client.get("$baseUrl/alpha/$code?fields=name,capital,continents,maps,population,timezones,currencies,languages,flags,coatOfArms")
             .body()
 
 }
