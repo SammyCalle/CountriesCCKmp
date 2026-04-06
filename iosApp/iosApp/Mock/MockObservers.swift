@@ -10,14 +10,14 @@ import Shared
 
 // Mock DetailObserver
 class MockDetailObserver: ObservableObject {
-    @Published var uiState: DetailScreenUiState = .success(detail: mockCountryDetail)
+    @Published var uiState: DetailScreenUiState = .Success(country: mockCountryDetail)
     
     init(countryCode: String) {}
 }
 
 // Mock SearchObserver
 class MockSearchObserver: ObservableObject {
-    @Published var uiState: SearchScreenUiState = .success(countries: mockCountries)
+    @Published var uiState: SearchScreenUiState = .Success(countries: mockCountries)
     
     var query: String = ""
     func onQueryChange(query: String) {

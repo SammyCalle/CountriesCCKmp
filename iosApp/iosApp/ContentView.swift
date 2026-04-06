@@ -12,11 +12,13 @@ struct DetailView_Previews: PreviewProvider {
         DetailView(countryCode: "DE")
             .environmentObject(MockDetailObserver(countryCode: "DE"))
             .previewDevice("iPhone 14")
+            .previewDisplayName("iPhone 14 Preview")
             .preferredColorScheme(.light)
         
         DetailView(countryCode: "DE")
             .environmentObject(MockDetailObserver(countryCode: "DE"))
-            .previewDevice("iPhone SE (3rd generation)")
+            .previewDevice("iPhone 14")
+            .previewDisplayName("iPhone 14 Preview")
             .preferredColorScheme(.dark)
     }
 }
@@ -29,6 +31,7 @@ struct SearchView_Previews: PreviewProvider {
             SearchView(path: $path)
                 .environmentObject(MockSearchObserver())
                 .previewDevice("iPhone 14")
+                .previewDisplayName("iPhone 14 Preview")
                 .preferredColorScheme(.light)
         }
     }

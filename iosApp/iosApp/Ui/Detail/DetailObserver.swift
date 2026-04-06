@@ -7,23 +7,23 @@
 
 import SwiftUI
 import Combine
-import shared
+import Shared
 
 @MainActor
 class DetailObserver: ObservableObject {
     private let helper = DetailViewModelHelper()
-    @Published var uiState: DetailScreenUiState
-    private var job: Kotlinx_coroutines_coreJob?
+        @Published var uiState: DetailScreenUiState
+        private var job: Kotlinx_coroutines_coreJob?
 
-    init(countryCode: String) {
-        self.uiState = helper.viewModel.uiState.value
-        job = helper.observeUiState { [weak self] state in
-            self?.uiState = state
+        init(countryCode: String) {
+            self.uiState = helper.viewModel.uiState.value as! DetailScreenUiState
+            job = helper.observeUiState { [weak self] state in
+                self?.uiState = state
+            }
+            helper.viewModel.loadCountry(countryCode: countryCode)
         }
-        helper.viewModel.loadCountry(countryCode: countryCode)
-    }
 
-    deinit {
-        job?.cancel(cause: nil)
-    }
+        deinit {
+            job?.cancel(cause: nil)
+        }
 }

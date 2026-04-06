@@ -5,47 +5,57 @@
 //  Created by Sammy Calle Torres on 06.04.2026.
 //
 
+import SwiftUI
+import Shared
+
 struct SearchView: View {
-    @Binding var  path : NavigationPath
+    @Binding var path: NavigationPath
     @StateObject private var observer = SearchObserver()
-    
+
     var body: some View {
-            VStack {
-                SearchBar(
-                    query: observer.query,
-                    onQueryChange: { observer.onQueryChange(query: $0) }
-                )
+        VStack {
+            SearchBar(
+                query: observer.query,
+                onQueryChange: { observer.onQueryChange(query: $0) }
+            )
+            stateView
+        }
+        .navigationTitle("Countries")
+        .navigationBarTitleDisplayMode(.large)
+    }
 
-                Group {
-                    if observer.uiState is SearchScreenUiState.Loading {
-                        ProgressView()
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+    @ViewBuilder
+    private var stateView: some View {
+        switch observer.uiState.asSwift {
+        case .loading:
+            ProgressView()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-                    } else if let success = observer.uiState as? SearchScreenUiState.Success {
-                        if success.countries.isEmpty {
-                            Text("No countries found")
-                                .foregroundColor(.secondary)
-                        } else {
-                            List(success.countries, id: \.countryCode) { country in
-                                CountryRowView(country: country)
-                                    .onTapGesture {
-                                        path.append(AppRoute.detail(countryCode: country.countryCode))
-                                    }
+        case .success(let countries):
+            if countries.isEmpty {
+                Text("No countries found")
+                    .foregroundColor(.secondary)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                List {
+                    ForEach(countries, id: \.code) { country in
+                        CountryRowView(country: country)
+                            .onTapGesture {
+                                path.append(AppRoute.detail(countryCode: country.code))
                             }
-                            .listStyle(.plain)
-                        }
-
-                    } else if let error = observer.uiState as? SearchScreenUiState.Error {
-                        Text(error.message)
-                            .foregroundColor(.red)
                     }
                 }
+                .listStyle(.plain)
             }
-            .navigationTitle("Countries")
-            .navigationBarTitleDisplayMode(.large)
+
+        case .error(let message):
+            Text(message)
+                .foregroundColor(.red)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 }
+
 
 struct SearchBar: View {
     let query : String

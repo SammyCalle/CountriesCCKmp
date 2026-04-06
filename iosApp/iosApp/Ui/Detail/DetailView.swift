@@ -19,15 +19,14 @@ struct DetailView: View {
 
     var body: some View {
         Group {
-            if observer.uiState is DetailScreenUiState.Loading {
+            switch observer.uiState.asSwift {
+            case .loading:
                 ProgressView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-            } else if let success = observer.uiState as? DetailScreenUiState.Success {
-                DetailContentView(detail: success.detail)
-
-            } else if let error = observer.uiState as? DetailScreenUiState.Error {
-                Text(error.message)
+            case .success(let country):
+                DetailContentView(country: country)
+            case .error(let message):
+                Text(message)
                     .foregroundColor(.red)
             }
         }
@@ -37,34 +36,75 @@ struct DetailView: View {
 }
 
 struct DetailContentView: View {
-    let detail: CountryDetail   // your domain model
+    let country: CountryDetail
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                Text(detail.name)
-                    .font(.largeTitle)
+
+                // Flag image
+                AsyncImage(url: URL(string: country.flag)) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                } placeholder: {
+                    Color.gray
+                }
+                .frame(height: 220)
+                .frame(maxWidth: .infinity)
+                .clipped()
+
+                // Country name
+                Text(country.name)
+                    .font(.title)
                     .bold()
-                DetailRow(label: "Capital", value: detail.capital)
-                DetailRow(label: "Region", value: detail.region)
-                DetailRow(label: "Code", value: detail.countryCode)
+                    .padding(.horizontal, 16)
+
+                // Coat of arms
+                AsyncImage(url: URL(string: country.coatOfArms)) { image in
+                    image
+                        .resizable()
+                        .scaledToFit()
+                } placeholder: {
+                    Color.gray
+                }
+                .frame(width: 80, height: 80)
+                .padding(.horizontal, 16)
+
+                // Sections
+                DetailSection(title: "Capital", value: country.capital.joined(separator: ", "))
+                DetailSection(title: "Population", value: "\(country.population.formatted())")
+                DetailSection(title: "Continent", value: country.continents.joined(separator: ", "))
+                DetailSection(title: "Currency", value: country.currencyName.joined(separator: ", "))
+                DetailSection(title: "Languages", value: country.languages.joined(separator: ", "))
+                DetailSection(title: "Timezones", value: country.timezones.joined(separator: ", "))
+
+                // Google Maps link
+                Link("View on Google Maps", destination: URL(string: country.googleMaps)!)
+                    .padding(.horizontal, 16)
+                    .foregroundColor(.black)
+                    .underline()
+
+                Spacer(minLength: 24)
             }
-            .padding()
         }
+        .navigationBarBackButtonHidden(true) // since you have custom back button
     }
 }
 
-struct DetailRow: View {
-    let label: String
+struct DetailSection: View {
+    let title: String
     let value: String
 
     var body: some View {
-        HStack {
-            Text(label)
+        VStack(alignment: .leading, spacing: 4) {
+            Text(title)
                 .foregroundColor(.secondary)
-                .frame(width: 80, alignment: .leading)
+                .font(.subheadline)
+
             Text(value)
                 .bold()
         }
+        .padding(.horizontal, 16)
     }
 }

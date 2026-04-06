@@ -6,7 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		A57FA7C52F845CC400A4AD3A /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A57FA7C42F845CA100A4AD3A /* libsqlite3.tbd */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		A57FA7C42F845CA100A4AD3A /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		B576921E4E867F6F9E63D755 /* CountriesCCKmp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CountriesCCKmp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -41,6 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A57FA7C52F845CC400A4AD3A /* libsqlite3.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,8 +66,17 @@
 			children = (
 				869EE33CD4520442CA5F9455 /* Configuration */,
 				A70434AAF7763F5C8FB0D983 /* iosApp */,
+				A57FA7C32F845CA000A4AD3A /* Frameworks */,
 				0A029CED878BD37A6C71BEA7 /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		A57FA7C32F845CA000A4AD3A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A57FA7C42F845CA100A4AD3A /* libsqlite3.tbd */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
