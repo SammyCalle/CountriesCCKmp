@@ -1,0 +1,26 @@
+//
+//  MockObservers.swift
+//  iosApp
+//
+//  Created by Sammy Calle Torres on 06.04.2026.
+//
+
+import SwiftUI
+import Shared
+
+// Mock DetailObserver
+class MockDetailObserver: ObservableObject {
+    @Published var uiState: DetailScreenUiState = .success(detail: mockCountryDetail)
+    
+    init(countryCode: String) {}
+}
+
+// Mock SearchObserver
+class MockSearchObserver: ObservableObject {
+    @Published var uiState: SearchScreenUiState = .success(countries: mockCountries)
+    
+    var query: String = ""
+    func onQueryChange(query: String) {
+        self.query = query
+    }
+}

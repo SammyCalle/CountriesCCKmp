@@ -1,0 +1,18 @@
+CREATE TABLE CountryEntity (
+    name TEXT NOT NULL,
+    countryCode TEXT NOT NULL UNIQUE
+);
+
+count:
+SELECT COUNT(*) FROM CountryEntity;
+
+insertAll:
+INSERT OR REPLACE INTO CountryEntity(name, countryCode) VALUES (?,?);
+
+getAllCountries:
+SELECT * FROM CountryEntity ORDER BY name ASC;
+
+searchCountries:
+SELECT * FROM CountryEntity
+WHERE name LIKE ?
+ORDER BY name ASC;
